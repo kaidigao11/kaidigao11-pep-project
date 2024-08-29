@@ -17,19 +17,22 @@ public class MessageService {
     }
 
     public Message creatMessage(Message message){
-        return messageDAO.creatMessage(message);
+        if(message.getMessage_text() != "" && message.getMessage_text().length() < 255){
+            return messageDAO.creatMessage(message);
+        }
+        return null;
     }
 
     public List<Message> getAllMessages(){
         return messageDAO.getAllMessages();
     }
 
-    public Message getMessageByMessageID(Message message){
-        return messageDAO.getMessageByMessageID(message.getMessage_id());
+    public Message getMessageByMessageID(int message_id){
+        return messageDAO.getMessageByMessageID(message_id);
     }
 
-    public Message deleteMessageByMessageID(Message message){
-        return messageDAO.deleteMessageByMessageID(message.getMessage_id());
+    public Message deleteMessageByMessageID(int message_id){
+        return messageDAO.deleteMessageByMessageID(message_id);
     }
 
     public Message updateMessageByMessageID(Message message){
