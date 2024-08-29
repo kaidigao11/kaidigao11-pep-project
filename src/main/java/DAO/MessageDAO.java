@@ -62,7 +62,7 @@ public class MessageDAO {
             //write preparedStatement's setInt method here.
             preparedStatement.setInt(1, messageID);
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
+            if(rs.next()){
                 Message message = new Message(rs.getInt("message_id"),
                         rs.getInt("posted_by"),
                         rs.getString("message_text"),

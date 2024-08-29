@@ -39,7 +39,7 @@ public class MessageService {
         return messageDAO.updateMessageByMessageID(message.getMessage_id(), message.getMessage_text());
     }
 
-    public List<Message> getAllMessagesByUser(Message message) {
-        return messageDAO.getAllMessagesByUser(message.getPosted_by());
+    public List<Message> getAllMessagesByUser(int posted_by) {
+        return messageDAO.getAllMessagesByUser(posted_by);
     }
 }

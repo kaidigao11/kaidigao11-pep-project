@@ -39,6 +39,7 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageByMessageID);
         app.delete("/messages/{message_id}", this::deleteMessageByMessageID);
         app.patch("/messages/{message_id}", this::updateMessageByMessageID);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesFromUserHandler);
         return app;
     }
 
@@ -90,9 +91,6 @@ public class SocialMediaController {
     private void getMessageByMessageID(Context context) throws JsonProcessingException{
         String message_id = context.pathParam("message_id");
         Message messages = messageService.getMessageByMessageID(Integer.parseInt(message_id));
-        if (messages == null) {
-            context.json(null);
-        }
         context.json(messages);
     }
 
@@ -113,5 +111,9 @@ public class SocialMediaController {
         context.json(message);
     }
 
-
+    private void getAllMessagesFromUserHandler(Context context) throws JsonProcessingException{
+        String user_id = context.pathParam("account_id");
+        List<Message> messages = messageService.getAllMessagesByUser(Integer.parseInt(user_id));
+        context.json(messages);
+    }
 }
