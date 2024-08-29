@@ -29,7 +29,9 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.post("localhost:8080/register", this::createNewAccountHandler);
+        app.post("/register", this::createNewAccountHandler);
+        app.post("/login", this::loginAccountHandler);
+
 
         return app;
     }
@@ -42,11 +44,23 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account addedAccount = accountService.registerAccount(account);
-        if (addedAccount.getUsername() != null && addedAccount.getPassword().length() >= 4) {
+        if (addedAccount!=null && addedAccount.getUsername()!= "" && addedAccount.getPassword().length() >=4) {
             context.json(mapper.writeValueAsString(addedAccount));
         }
         else{
             context.status(400);
+        }
+    }
+
+    private void loginAccountHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account addedAccount = accountService.retrieveAccount(account);
+        if (addedAccount!=null) {
+            context.json(mapper.writeValueAsString(addedAccount));
+        }
+        else{
+            context.status(401);
         }
     }
 

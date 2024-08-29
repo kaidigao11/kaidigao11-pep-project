@@ -5,7 +5,7 @@ import DAO.AccountDAO;
 
 public class AccountService {
     private AccountDAO accountDAO;
-    
+
     public AccountService(){
         accountDAO = new AccountDAO();
     }
@@ -19,6 +19,7 @@ public class AccountService {
     }
 
     public Account retrieveAccount(Account account){
+        
         return accountDAO.verifyAccount(account);
     }
 }
