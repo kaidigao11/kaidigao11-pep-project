@@ -51,7 +51,7 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account addedAccount = accountService.registerAccount(account);
-        if (addedAccount!=null && addedAccount.getUsername()!= "" && addedAccount.getPassword().length() >=4) {
+        if (addedAccount!=null) {
             context.json(mapper.writeValueAsString(addedAccount));
         }
         else{
@@ -89,19 +89,22 @@ public class SocialMediaController {
     }
 
     private void getMessageByMessageIDHandler(Context context) throws JsonProcessingException{
-    
-        String message_id = context.pathParam("message_id");
-        Message messages = messageService.getMessageByMessageID(Integer.parseInt(message_id));
-        context.json(messages);
+        int message_id = Integer.parseInt(context.pathParam("message_id"));
+        Message message = messageService.getMessageByMessageID(message_id);
+        if (message!=null) {
+            context.json(message);
+        }
+        context.status(200);
+        
     }
 
     private void deleteMessageByMessageIDHandler(Context context) throws JsonProcessingException{
         String message_id = context.pathParam("message_id");
         Message messages = messageService.deleteMessageByMessageID(Integer.parseInt(message_id));
-        if (messages==null) {
-            context.status(200);
+        if(messages!=null){
+            context.json(messages);
         }
-        context.json(messages);
+        context.status(200);
     }
 
     private void updateMessageByMessageIDHandler(Context context) throws JsonProcessingException{
@@ -109,7 +112,12 @@ public class SocialMediaController {
         int message_id = Integer.parseInt(context.pathParam("message_id"));
         Message message = mapper.readValue(context.body(), Message.class);
         Message updatedMessage = messageService.updateMessageByMessageID(message_id, message);
-        context.json(mapper.writeValueAsString(updatedMessage));
+        if (updatedMessage!=null) {
+            context.json(updatedMessage);
+        }
+        else{
+            context.status(400);
+        }
     }
 
     private void getAllMessagesFromUserHandler(Context context) throws JsonProcessingException{

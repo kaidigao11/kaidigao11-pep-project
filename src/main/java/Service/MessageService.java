@@ -32,11 +32,17 @@ public class MessageService {
     }
 
     public Message deleteMessageByMessageID(int message_id){
-        return messageDAO.deleteMessageByMessageID(message_id);
+        if (getMessageByMessageID(message_id) != null) {
+            return messageDAO.deleteMessageByMessageID(message_id);
+        }
+        return null;
     }
 
     public Message updateMessageByMessageID(int message_id, Message message){
-        return messageDAO.updateMessageByMessageID(message_id, message);
+        if (getMessageByMessageID(message_id)!= null && message.getMessage_text().length() > 0 && message.getMessage_text().length() <255) {
+            return messageDAO.updateMessageByMessageID(message_id, message);
+        }
+        return null;
     }
 
     public List<Message> getAllMessagesByUser(int posted_by) {

@@ -15,11 +15,20 @@ public class AccountService {
     }
     
     public Account registerAccount(Account account) {
-        return accountDAO.regiseterAccount(account);
+        if (account.getUsername() != "" && account.getPassword().length() >=4) {
+            return accountDAO.regiseterAccount(account);
+        }
+        return null;
     }
 
     public Account retrieveAccount(Account account){
-        
-        return accountDAO.verifyAccount(account);
+        if (checkAccountExists(account) != null) {
+            return accountDAO.verifyAccount(account);
+        }
+        return null;
+    }
+
+    public Account checkAccountExists(Account account){
+        return accountDAO.checkAccountExists(account);
     }
 }

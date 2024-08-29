@@ -78,13 +78,19 @@ public class MessageDAO {
     public Message deleteMessageByMessageID(int messageID){
         Connection connection = ConnectionUtil.getConnection();
         try {
+            String sql1 = "SELECT * FROM Message WHERE message_id = ?";
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
+            preparedStatement1.setInt(1, messageID);
+            ResultSet rs = preparedStatement1.executeQuery();
+
             //Write SQL logic here
             String sql = "DELETE FROM Message WHERE message_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //write preparedStatement's setInt method here.
             preparedStatement.setInt(1, messageID);
-            ResultSet rs = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+
             while(rs.next()){
                 Message message = new Message(rs.getInt("message_id"),
                         rs.getInt("posted_by"),
@@ -108,7 +114,12 @@ public class MessageDAO {
             //write preparedStatement's setInt method here.
             preparedStatement.setString(1, message.getMessage_text());
             preparedStatement.setInt(2 , messageID);
-            ResultSet rs = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+
+            String sql1 = "SELECT * FROM Message WHERE message_id = ?";
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
+            preparedStatement1.setInt(1, messageID);
+            ResultSet rs = preparedStatement1.executeQuery();
             while(rs.next()){
                 Message res = new Message(rs.getInt("message_id"),
                         rs.getInt("posted_by"),
