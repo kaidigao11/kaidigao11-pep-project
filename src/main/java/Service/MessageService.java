@@ -35,8 +35,8 @@ public class MessageService {
         return messageDAO.deleteMessageByMessageID(message_id);
     }
 
-    public Message updateMessageByMessageID(Message message){
-        return messageDAO.updateMessageByMessageID(message.getMessage_id(), message.getMessage_text());
+    public Message updateMessageByMessageID(int message_id, Message message){
+        return messageDAO.updateMessageByMessageID(message_id, message);
     }
 
     public List<Message> getAllMessagesByUser(int posted_by) {

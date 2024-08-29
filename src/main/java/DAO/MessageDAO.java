@@ -62,7 +62,7 @@ public class MessageDAO {
             //write preparedStatement's setInt method here.
             preparedStatement.setInt(1, messageID);
             ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()){
+            while(rs.next()){
                 Message message = new Message(rs.getInt("message_id"),
                         rs.getInt("posted_by"),
                         rs.getString("message_text"),
@@ -79,7 +79,7 @@ public class MessageDAO {
         Connection connection = ConnectionUtil.getConnection();
         try {
             //Write SQL logic here
-            String sql = "DELETE * FROM Message WHERE message_id = ?";
+            String sql = "DELETE FROM Message WHERE message_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //write preparedStatement's setInt method here.
@@ -98,7 +98,7 @@ public class MessageDAO {
         return null;
     }
 
-    public Message updateMessageByMessageID(int messageID, String message_text_string){
+    public Message updateMessageByMessageID(int messageID, Message message){
         Connection connection = ConnectionUtil.getConnection();
         try {
             //Write SQL logic here
@@ -106,15 +106,15 @@ public class MessageDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //write preparedStatement's setInt method here.
-            preparedStatement.setString(1, message_text_string);
+            preparedStatement.setString(1, message.getMessage_text());
             preparedStatement.setInt(2 , messageID);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                Message message = new Message(rs.getInt("message_id"),
+                Message res = new Message(rs.getInt("message_id"),
                         rs.getInt("posted_by"),
                         rs.getString("message_text"),
                         rs.getLong("time_posted_epoch"));
-                return message;
+                return res;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
